@@ -1,0 +1,131 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello IndexController!{% endblock %}
+
+{% block body %}
+
+FICHIER A
+
+
+{% set firstObjectA = dataFileA[0] %}
+<table style="border-collapse: collapse; width: 100%;">
+    <thead>
+        <tr style="background-color: #000; color: #fff;">
+            <th>Object Number</th>
+            {% for key, value in firstObjectA %}
+                <th style="border-left: 1px solid #fff;">{{ key }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in dataFileA %}
+            <tr style="background-color: {{ loop.index0 is divisible by(2) ? '#d3d3d3' : '#ffffff' }}; border: 1px solid #000;">
+                <td>{{ loop.index }}</td>
+                {% for key, value in object %}
+                    <td style="border-left: 1px solid #000;">{{ value is not empty ? value : 'null' }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<hr>
+<hr>
+
+FICHIER B
+
+<br>
+
+{% set firstObjectB = dataFileB[0] %}
+<table style="border-collapse: collapse; width: 100%;">
+    <thead>
+        <tr style="background-color: #000; color: #fff;">
+            <th>Object Number</th>
+            {% for key, value in firstObjectB %}
+                <th style="border-left: 1px solid #fff;">{{ key }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in dataFileB %}
+            <tr style="background-color: {{ loop.index0 is divisible by(2) ? '#d3d3d3' : '#ffffff' }}; border: 1px solid #000;">
+                <td>{{ loop.index }}</td>
+                {% for key, value in object %}
+                    <td style="border-left: 1px solid #000;">{{ value is not empty ? value : 'null' }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<hr>
+<hr>
+
+{% for result in redshiftComparisonResults %}
+    <p>{{ result.message }}</p>
+{% endfor %}
+
+<hr>
+<hr>
+
+<br>
+
+{% set X = 1 %} {# Declare X common for both file#}
+
+{% if dataFileA[X-1] is defined %}
+    {% set objectAX = dataFileA[X-1] %}
+{% else %}
+    {% set objectAX = null %}
+{% endif %}
+
+{% if objectAX is not null %}
+<table style="border-collapse: collapse; width: 100%;">
+    <thead>
+        <tr style="background-color: #000; color: #fff;">
+        {% for key, value in objectAX %}
+            <th style="border-left: 1px solid #fff;">{{ key }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+        <tr style="background-color: #d3d3d3; border: 1px solid #000;">
+        {% for key, value in objectAX %}
+            <td style="border-left: 1px solid #000;">{{ value is not empty ? value : 'null' }}</td>
+        {% endfor %}
+        </tr>
+    </tbody>
+</table>
+{% else %}
+<p>Object {{ X }} not found in File A.</p>
+{% endif %}
+
+{% if dataFileB[X-1] is defined %}
+    {% set objectBX = dataFileB[X-1] %}
+{% else %}
+    {% set objectBX = null %}
+{% endif %}
+
+{% if objectBX is not null %}
+<table style="border-collapse: collapse; width: 100%;">
+    <thead>
+        <tr style="background-color: #000; color: #fff;">
+        {% for key, value in objectBX %}
+            <th style="border-left: 1px solid #fff;">{{ key }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+        <tr style="background-color: #d3d3d3; border: 1px solid #000;">
+        {% for key, value in objectBX %}
+            <td style="border-left: 1px solid #000;">{{ value is not empty ? value : 'null' }}</td>
+        {% endfor %}
+        </tr>
+    </tbody>
+</table>
+{% else %}
+<p>Object {{ X }} not found in File B.</p>
+{% endif %}
+
+{% endblock %}
+
